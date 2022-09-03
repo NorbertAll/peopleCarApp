@@ -1,5 +1,5 @@
+use rand::Rng;
 use std::{collections::HashMap, env};
-
 use warp::Filter;
 
 async fn calculate_dissel_usage_for_distance(
@@ -30,19 +30,18 @@ async fn calculate_dissel_usage_for_distance(
         fuel_consumotion = (distance / 100.0) * fuel_usage;
     }
     if fuel_consumotion <= 0.0 {
-        Ok(format!("Error"))
+        Ok(format!("{{\"Error\": \"invalid input\"}}"))
     } else {
-        Ok(format!(
-            "{{\"calculateDisselUsageForDistance\": {}}}",
-            fuel_consumotion
-        ))
+        Ok(format!("{{\"fuelUsage\": {}}}", fuel_consumotion))
     }
 }
 
 async fn probability_of_unit_injector_fail(
     param: HashMap<String, String>,
 ) -> Result<impl warp::Reply, warp::Rejection> {
-    Ok(format!("probabilityOfUnitInjectorFail {:#?}", param))
+    let mut posibility = rand::thread_rng().gen_range(0, 100) as f64;
+    posibility = posibility / 100.0;
+    Ok(format!("{{\"failProbability\": {:#?}}}", posibility))
 }
 #[tokio::main]
 async fn main() {
