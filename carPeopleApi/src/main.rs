@@ -1,5 +1,5 @@
 use rand::Rng;
-use std::{collections::HashMap, env};
+use std::collections::HashMap;
 use warp::Filter;
 
 async fn calculate_dissel_usage_for_distance(
@@ -16,12 +16,12 @@ async fn calculate_dissel_usage_for_distance(
             distance = dist;
         }
         if key == "yearOfProduction" {
-            let my_stringx = value.to_string(); // `parse()` works with `&str` and `String`!
+            let my_stringx = value.to_string();
             let yer = my_stringx.parse::<i32>().unwrap_or(0);
             year_of_production = yer;
         }
         if key == "fuelUsagePer100KM" {
-            let my_stringxx = value.to_string(); // `parse()` works with `&str` and `String`!
+            let my_stringxx = value.to_string();
             let us = my_stringxx.parse::<f64>().unwrap_or(0.0);
             fuel_usage = us;
         }
@@ -45,9 +45,6 @@ async fn probability_of_unit_injector_fail(
 }
 #[tokio::main]
 async fn main() {
-    // GET /hello/warp => 200 OK with body "Hello, warp!"
-    //let hello = warp::path!("hello" / String).map(|name| format!("Hello, {}!", name));
-
     let calculate_dissel_usage_for_distance = warp::get()
         .and(warp::path("calculateDisselUsageForDistance"))
         .and(warp::query::<HashMap<String, String>>())
